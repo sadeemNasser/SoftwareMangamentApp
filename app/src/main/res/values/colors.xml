@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#337AB7</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="pinkPantherColor">#F981B0</color>
+    <color name="pinkActive">@color/colorAccent</color>
+    <color name="pinkFocused">#DB7093</color>
+    <color name="pinkLight">#E5A0D4</color>
+
+    <color name="menuTextColor">@color/pinkLight</color>
+
+    <color name="deleteColor">#D32F2F</color>
+    <color name="createColor">#5cb85c</color>
+    <color name="infoColor">#5BC0DE</color>
+
+    <color name="infoSwipe">#388E3C</color>
+    <color name="editSwipe">@color/colorPrimary</color>
+
+    <color name="finishedColor">#388E3C</color>
+</resources>

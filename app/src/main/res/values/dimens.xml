@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="smallTextSize1">6sp</dimen>
+    <dimen name="smallTextSize12">8sp</dimen>
+    <dimen name="smallTextSize13">10sp</dimen>
+    <dimen name="mediumTextSize11">16sp</dimen>
+    <dimen name="mediumTextSize12">18sp</dimen>
+    <dimen name="mediumTextSize13">20sp</dimen>
+    <dimen name="bigTextSize11">26sp</dimen>
+    <dimen name="bigTextSize12">28sp</dimen>
+    <dimen name="bigTextSize13">30sp</dimen>
+
+    <dimen name="smallPadding1">5dp</dimen>
+    <dimen name="smallPadding2">10dp</dimen>
+    <dimen name="smallPadding3">15dp</dimen>
+    <dimen name="mediumPadding1">20dp</dimen>
+    <dimen name="mediumPadding2">25dp</dimen>
+    <dimen name="mediumPadding3">30dp</dimen>
+    <dimen name="bigPadding1">35dp</dimen>
+    <dimen name="bigPadding2">40dp</dimen>
+    <dimen name="bigPadding3">45dp</dimen>
+</resources>
