@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "81538116373",
+    "firebase_url": "https://management-project-3e341.firebaseio.com",
+    "project_id": "management-project-3e341",
+    "storage_bucket": "management-project-3e341.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81538116373:android:5793f3609797b2d5e6d71c",
+        "android_client_info": {
+          "package_name": "com.example.softwaremangamentapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81538116373-6qmi1o2elkd28hkj1290vveb9581j8el.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALILIrXIVZARdedVpwQ68ywmcuPE91gLc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "81538116373-6qmi1o2elkd28hkj1290vveb9581j8el.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
