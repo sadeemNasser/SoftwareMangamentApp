@@ -1,6 +1,8 @@
 <resources>
     <!-- General strings -->
-    <string name="app_name">Software Project</string>
+    <string name="app_name">Project Mangament</string>
+
+    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
     <!-- Login Activity && Register Activity -->
