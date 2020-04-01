@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="255dp"
+        android:layout_height="385dp"
+        android:layout_centerInParent="true"
+        android:background="@color/white"
+        android:orientation="vertical" >
+        <EditText
+            android:id="@+id/projectName"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:hint="@string/project_name" />
+        <EditText
+            android:id="@+id/projectDesc"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif"
+            android:hint="@string/description"/>
+        <EditText
+            android:id="@+id/startDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif"
+            android:ems="10"
+            android:hint="Enter Start Date" />
+        <EditText
+            android:id="@+id/endDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif"
+            android:ems="10"
+            android:hint="Enter End Date" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/create"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/gradient"
+            android:text="Create"/>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/button_close"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignTop="@+id/relativeLayout1"
+        android:layout_alignRight="@+id/relativeLayout1"
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="-1dp"
+        android:background="@drawable/close" />
+
+</RelativeLayout>

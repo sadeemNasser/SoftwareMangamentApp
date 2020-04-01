@@ -21,7 +21,7 @@
     <string name="error_missing">%1$s is missing</string>
     <string name="error_password">Passwords do not match</string>
 
-
+    <string name="project_name">Project Name</string>
     <string name="add_project">Add project</string>
     <string name="settings">Settings</string>
     <string name="client">Client</string>
