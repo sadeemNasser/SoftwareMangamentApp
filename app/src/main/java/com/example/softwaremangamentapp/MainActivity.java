@@ -41,7 +41,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements  AdapterView.OnItemClickListener{
 
-    @BindView(R.id.addProject) FloatingActionButton _addProject;
+    @BindView(R.id.addProject1) FloatingActionButton _addProject;
     private PopupWindow pw;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mDatabase;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
 
         project = new Project();
         firebaseAuth = FirebaseAuth.getInstance();
-        list = findViewById(R.id.list);
+        list = findViewById(R.id.list1);
         getProjects();
 
         _addProject.setOnClickListener(new View.OnClickListener() {
@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
         String path = "Projects"+"/"+userId;
         mDatabase = FirebaseDatabase.getInstance().getReference(path);
         String key = mDatabase.push().getKey();
+        project.setProjectID(key);
         mDatabase.child(key).setValue(project);
         Toast.makeText(MainActivity.this,"Successfully created",Toast.LENGTH_LONG).show();
         pw.dismiss();
@@ -256,9 +257,11 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
     public void viewProject(Project project2){
 
         Intent i = (new Intent(this, TaskActivity.class));
+        i.putExtra("projectId",project2.getProjectID());
         i.putExtra("projectName",project2.getProjectName());
         i.putExtra("sDate",project2.getProjectStartDate());
         i.putExtra("eDate",project2.getProjectEndDate());
+        i.putExtra("projectD",project2.getProjectDescription());
         i.putExtra("totalCost",String.valueOf(project2.getTotalCost()));
 
         startActivity(i);

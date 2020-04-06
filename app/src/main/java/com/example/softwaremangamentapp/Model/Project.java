@@ -3,6 +3,7 @@ package com.example.softwaremangamentapp.Model;
 
 public class Project {
 
+    private String projectID;
     private String projectName;
     private String projectStartDate;
     private String projectEndDate;
@@ -22,6 +23,13 @@ public class Project {
     }
 
 
+    public void setProjectID(String projectID) {
+        this.projectID = projectID;
+    }
+
+    public String getProjectID() {
+        return projectID;
+    }
 
     public double getTotalCost() {
         return totalCost;
