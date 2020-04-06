@@ -1,10 +1,8 @@
 package com.example.softwaremangamentapp;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -14,26 +12,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.softwaremangamentapp.Model.Project;
-import com.example.softwaremangamentapp.Model.ProjectItem;
+import com.example.softwaremangamentapp.Adapter.TaskAdapter;
 import com.example.softwaremangamentapp.Model.TaskInfo;
-import com.example.softwaremangamentapp.Model.TaskItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -45,11 +35,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import butterknife.BindView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class TaskActivity extends AppCompatActivity {
 
-    Switch status;
     private DatePickerDialog picker;
     private ImageButton btncancel;
     private PopupWindow pw;
@@ -61,11 +51,11 @@ public class TaskActivity extends AppCompatActivity {
     private Button createBTN;
     private Button ProjectInfo;
     private TextView ProjectCost;
-    private TextView duration;
     Double totalCost=0.0;
-    private ListView list;
+    private RecyclerView list;
     Bundle extras;
-    private ArrayAdapter adapter;
+    TaskInfo task;
+    private TaskAdapter adapter;
     String projecId = "";
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseAuth firebaseAuth;
@@ -83,10 +73,41 @@ public class TaskActivity extends AppCompatActivity {
         buttonCreate = findViewById(R.id.addTask1);
         ProjectInfo = findViewById(R.id.ProjectInfo);
         extras = getIntent().getExtras();
-
+        ProjectCost = (TextView) findViewById(R.id.projectC);
+        if (extras != null)
+            projecId = extras.getString("projectId");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //status = itemView.findViewById(R.id.status);
+        task = new TaskInfo();
+        firebaseAuth = FirebaseAuth.getInstance();
+        list = findViewById(R.id.list2);
+        final RecyclerView recyclerView = findViewById(R.id.list2);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(new TaskAdapter(this,taskInfos,projecId));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        String userId=firebaseAuth.getCurrentUser().getUid();
+        DatabaseReference refrence =database.getReference().child("Projects").child(userId).child(projecId);
+        DatabaseReference ref = database.getReference().child("Projects").child(userId).child(projecId).child("Tasks");
+        // Attach a listener to read the data at our posts reference
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child: dataSnapshot.getChildren()){
+                    task = child.getValue(TaskInfo.class);
+                    TaskList.add(task.getTaskName());
+                    taskInfos.add(task);
+                    totalCost+=task.getTaskCost();
+                    refrence.child("totalCost").setValue(totalCost);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+        adapter = new TaskAdapter(TaskActivity.this,taskInfos,projecId);
 
 
         buttonCreate.setOnClickListener(new View.OnClickListener() {
@@ -165,11 +186,8 @@ public class TaskActivity extends AppCompatActivity {
         });
         if (extras != null)
             projecId = extras.getString("projectId");
-        System.out.println("***********************");
-        System.out.println(projecId);
         list = findViewById(R.id.list2);
         firebaseAuth = FirebaseAuth.getInstance();
-        getTasks();
 
         ProjectInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,245 +203,6 @@ public class TaskActivity extends AppCompatActivity {
 
         }
     };
-
-    public void getTasks(){
-
-        String userId=firebaseAuth.getCurrentUser().getUid();
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Projects").child(userId).child(projecId).child("Tasks");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot child: dataSnapshot.getChildren()){
-
-
-                    TaskInfo task = child.getValue(TaskInfo.class);
-//                    String prId=task.getProjectID();
-//                    if(prId.equals(projecId))
-                        TaskList.add(task.getTaskName());
-                        totalCost+=task.getTaskCost();
-
-                }
-                ProjectCost.setText("Project Total cost: "+totalCost);
-                viewTask();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
-
-        adapter = new ArrayAdapter<String>(this, R.layout.activity_listview,TaskList);
-
-
-    }
-
-    private void viewTask() {
-        list.setAdapter(adapter);
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getTaskFromPosition(position);
-
-            }
-        });
-    }
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //startActivity(position);
-    }
-
-    public void getTaskFromPosition(final int taskPosition){
-
-        //get user id
-        String userId=firebaseAuth.getCurrentUser().getUid();
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Projects").child(userId).child(projecId).child("Tasks");
-        // Attach a listener to read the data at our posts reference
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-
-
-                    TaskInfo task = child.getValue(TaskInfo.class);
-//                    String prId=task.getProjectID();
-//                    if(prId.equals(projecId))
-
-                        taskInfos.add(task);
-
-                }
-                TaskInfo task2 = taskInfos.get(taskPosition);
-                viewtask(task2);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-
-
-        });
-
-//        holder.status.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(final View v) {
-//                AlertDialog.Builder builder1 = new AlertDialog.Builder(v.getContext());
-//                builder1.setMessage("هل أنت متأكد أنه تم ايجاد المفقود وتريد إغلاق طلبك ؟");
-//                builder1.setCancelable(true);
-//
-//                builder1.setPositiveButton(
-//                        "نعم",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//
-//                                // dialog.cancel();
-//
-//                                databaseReferenceUserReport.addListenerForSingleValueEvent(new ValueEventListener() {
-//                                    @Override
-//                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//
-//                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                                            Report rep = snapshot.getValue(Report.class);
-//                                            if (report.getDate() == rep.getDate()) {
-//
-//                                                databaseReferenceUserReport.child(snapshot.getKey()).child("ReportStatus").setValue("مغلق");
-//                                                notifyDataSetChanged();
-//                                                holder.status.setText("مغلق");
-//                                                holder.status.setChecked(false);
-//                                                holder.status.setEnabled(false);
-//                                                holder.status.setAlpha((float) 0.5);
-//
-//
-//                                            }
-//
-//                                        }
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                                    }
-//                                });
-//                                Toast.makeText(context, "تم إغلاق بلاغك", Toast.LENGTH_SHORT).show();
-//
-//                            }
-//
-//                        });
-//
-//                builder1.setNegativeButton(
-//                        "إلغاء الامر",
-//                        (dialog, id) -> {
-//                            holder.status.setChecked(true);
-//                            dialog.cancel();
-//                        });
-//
-//                AlertDialog alert11 = builder1.create();
-//
-//                alert11.show();
-//                alert11.setCanceledOnTouchOutside(false);
-//
-//            }
-//        });
-
-        //        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-//            @Override
-//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
-//                AlertDialog.Builder builder1 = new AlertDialog.Builder(MyReport.this);
-//                builder1.setMessage("هل أنت متأكد من حذف هذا البلاغ ؟");
-//                builder1.setCancelable(true);
-//
-//                builder1.setPositiveButton(
-//                        "نعم",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//
-//                                final int position = viewHolder.getAdapterPosition();
-//                                deletedReport = newList.get(position);
-//                                System.out.println("Here"+position);
-//                                reference.addListenerForSingleValueEvent(new ValueEventListener() {
-//
-//
-//                                    @Override
-//                                    public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//
-//                                        for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                                            Report rep = snapshot.getValue(Report.class);
-//                                            if (deletedReport.getDate() == rep.getDate()) {
-//                                                reference.child(snapshot.getKey()).removeValue();
-//                                                newList.remove(position);
-//                                                adapter.notifyItemRangeChanged(position,newList.size());
-//                                                adapter.updateList(newList);
-//
-//                                                final Snackbar snackBar = Snackbar.make(recyclerView, "تم الحذف", Snackbar.LENGTH_LONG);
-//                                                snackBar.setActionTextColor(getResources().getColor(R.color.colorPrimary));
-////                            snackBar.setAction("تراجع", v -> {
-////                                snackBar.dismiss();
-////                                findViewById(R.id.noReports).setVisibility(View.GONE);
-////                                reference.child(snapshot.getKey()).setValue(deletedReport);
-////                                newList.add(position, deletedReport);
-////                                adapter.notifyItemInserted(position);
-////                                adapter.updateList(newList);
-//
-//
-//
-//
-//                                                // }).show();
-//
-//
-//                                            }
-//
-//
-//
-//                                        }
-//                                    }
-//
-//                                    @Override
-//                                    public void onCancelled(DatabaseError databaseError) {
-//
-//                                    }
-//
-//                                });
-//                            }
-//
-//                        });
-//                builder1.setNegativeButton(
-//                        "إلغاء الامر",
-//                        (dialog, id) -> {
-//                            adapter.updateList(newList);
-//                            dialog.cancel();
-//                        });
-//
-//                AlertDialog alert11 = builder1.create();
-//
-//                alert11.show();
-//                alert11.setCanceledOnTouchOutside(false);}
-//
-//
-//
-//            @Override
-//            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-//                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-//                        .addSwipeRightBackgroundColor(ContextCompat.getColor(MyReport.this, R.color.darkRed))
-//                        .addActionIcon(R.drawable.ic_delete_black_24dp)
-//                        .addSwipeRightLabel("حذف")
-//                        .create()
-//                        .decorate();
-//
-//                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-//            }
-//        };
-
-    }
 
     public void viewtask(TaskInfo task){
         Intent i = (new Intent(this, TaskItem.class));
@@ -457,7 +236,9 @@ public class TaskActivity extends AppCompatActivity {
         task.setTaskStartDate(startDate.getText().toString().trim());
         task.setTaskEndDate(endDate.getText().toString().trim());
         task.setTaskResource(taskRes.getText().toString().trim());
-        task.setTaskCost(Double.parseDouble(taskCost.getText().toString().trim()));
+        Double cost = Double.parseDouble(taskCost.getText().toString());
+        task.setTaskCost(cost);
+        task.setStatues("NotYet");
 
         String userId=firebaseAuth.getCurrentUser().getUid();
 

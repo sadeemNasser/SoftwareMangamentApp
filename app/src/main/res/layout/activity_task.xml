@@ -4,24 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
-        android:layout_width = "match_parent"
-        android:layout_height = "match_parent"
-        android:orientation = "vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ListView
+
+        <androidx.recyclerview.widget.RecyclerView
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/list2"
             android:layout_width="350dp"
             android:layout_height="500dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="60dp"
-            android:background="#F1EFEF"
-            android:divider="#C7392E"
-            android:dividerHeight="0.8dp"
-            android:footerDividersEnabled="false"
-            android:forceDarkAllowed="false"
-            android:headerDividersEnabled="false">
-
-        </ListView>
+            android:background="#F1EFEF"/>
 
         <Button
             android:id="@+id/ProjectInfo"
@@ -33,23 +28,7 @@
             android:textColor="#FFFFFF" />
 
     </LinearLayout>
-    <!--    <LinearLayout-->
-    <!--        android:orientation="vertical"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:paddingTop="250dp"-->
-    <!--        android:paddingLeft="24dp"-->
-    <!--        android:paddingRight="24dp">-->
 
-    <!--        <ImageView-->
-    <!--            android:layout_width="300dp"-->
-    <!--            android:layout_height="430dp"-->
-    <!--            android:layout_gravity="center_horizontal"-->
-    <!--            android:layout_marginBottom="24dp"-->
-    <!--            app:srcCompat="@drawable/home1" />-->
-
-
-    <!--    </LinearLayout>-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addTask1"
@@ -73,35 +52,13 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="250dp"
-        android:layout_height="430dp"
+        android:layout_width="300dp"
+        android:layout_height="500dp"
         android:layout_gravity="bottom|right"
-        android:layout_marginRight="-40dp"
-        app:srcCompat="@drawable/home1" />
+        android:layout_marginRight="-55dp"
+        android:layout_marginBottom="-75dp"
+        app:srcCompat="@drawable/background" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/textView1"-->
-<!--        style="@android:style/Widget.Material.TextView"-->
-<!--        android:layout_width="380dp"-->
-<!--        android:layout_height="48dp"-->
-<!--        android:layout_gravity="bottom|right"-->
-<!--        android:layout_marginBottom="120dp"-->
-<!--        android:text="Project Duration"-->
-<!--        android:textColor="#AC2A12"-->
-<!--        android:textSize="18sp"-->
-<!--        android:textStyle="bold" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/textView2"-->
-<!--        style="@android:style/Widget.Material.TextView"-->
-<!--        android:layout_width="379dp"-->
-<!--        android:layout_height="48dp"-->
-<!--        android:layout_gravity="bottom|right"-->
-<!--        android:layout_marginBottom="70dp"-->
-<!--        android:text="Project Total cost"-->
-<!--        android:textColor="#AC2A12"-->
-<!--        android:textSize="18sp"-->
-<!--        android:textStyle="bold" />-->
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

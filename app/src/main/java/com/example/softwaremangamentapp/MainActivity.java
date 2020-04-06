@@ -2,26 +2,20 @@ package com.example.softwaremangamentapp;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.example.softwaremangamentapp.Adapter.ProjectAdapter;
 import com.example.softwaremangamentapp.Model.Project;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,18 +24,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends AppCompatActivity implements  AdapterView.OnItemClickListener{
+public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.addProject1) FloatingActionButton _addProject;
+    @BindView(R.id.addProject1)
+    FloatingActionButton _addProject;
     private PopupWindow pw;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mDatabase;
@@ -53,14 +48,12 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
     private EditText endDate;
     private Button createBTN;
     private ImageButton btncancel;
-    private ListView list;
-    private ArrayAdapter adapter;
+    private RecyclerView list;
+    private ProjectAdapter adapter;
     private Project project;
     Project project1;
-    Project project2 = new Project();
     ArrayList<String> projectList = new ArrayList<String>();
     ArrayList<Project> projectList2 = new ArrayList<Project>();
-
 
 
     @Override
@@ -72,7 +65,31 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
         project = new Project();
         firebaseAuth = FirebaseAuth.getInstance();
         list = findViewById(R.id.list1);
-        getProjects();
+        final RecyclerView recyclerView = findViewById(R.id.list1);
+        recyclerView.setAdapter(new ProjectAdapter(this, projectList2));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        String userId = firebaseAuth.getCurrentUser().getUid();
+        String path = "Projects" + "/" + userId;
+
+        DatabaseReference ref = database.getReference(path);
+        // Attach a listener to read the data at our posts reference
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    project1 = child.getValue(Project.class);
+                    projectList.add(project1.getProjectName());
+                    projectList2.add(project1);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+        adapter = new ProjectAdapter(MainActivity.this, projectList2);
+
 
         _addProject.setOnClickListener(new View.OnClickListener() {
 
@@ -89,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
 
         LayoutInflater inflater = (LayoutInflater) MainActivity.this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.addprojectdoalog,null);
+        View layout = inflater.inflate(R.layout.addprojectdoalog, null);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.width = WindowManager.LayoutParams.FILL_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -109,11 +126,11 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
             }
         });
 
-        projectName=(EditText) layout.findViewById(R.id.projectName);
+        projectName = (EditText) layout.findViewById(R.id.projectName);
 
-        projectDesc=(EditText) layout.findViewById(R.id.projectDesc);
+        projectDesc = (EditText) layout.findViewById(R.id.projectDesc);
 
-        startDate=(EditText) layout.findViewById(R.id.startDate);
+        startDate = (EditText) layout.findViewById(R.id.startDate);
         startDate.setInputType(InputType.TYPE_NULL);
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
                 picker.show();
             }
         });
-        endDate=(EditText) layout.findViewById(R.id.endDate);
+        endDate = (EditText) layout.findViewById(R.id.endDate);
         endDate.setInputType(InputType.TYPE_NULL);
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,7 +179,8 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
 
         }
     };
-    public void CreateProject(){
+
+    public void CreateProject() {
 
         project.setProjectName(projectName.getText().toString().trim());
         project.setProjectDescription(projectDesc.getText().toString().trim());
@@ -171,122 +189,18 @@ public class MainActivity extends AppCompatActivity implements  AdapterView.OnIt
 
 
         //get user id
-        String userId=firebaseAuth.getCurrentUser().getUid();
-        String path = "Projects"+"/"+userId;
+        String userId = firebaseAuth.getCurrentUser().getUid();
+        String path = "Projects" + "/" + userId;
         mDatabase = FirebaseDatabase.getInstance().getReference(path);
         String key = mDatabase.push().getKey();
         project.setProjectID(key);
         mDatabase.child(key).setValue(project);
-        Toast.makeText(MainActivity.this,"Successfully created",Toast.LENGTH_LONG).show();
+        Toast.makeText(MainActivity.this, "Successfully created", Toast.LENGTH_LONG).show();
         pw.dismiss();
 
 
     }
-    private void getProjects() {
 
-        //get user id
-        String userId=firebaseAuth.getCurrentUser().getUid();
-        String path = "Projects"+"/"+userId;
 
-        DatabaseReference ref = database.getReference(path);
-        // Attach a listener to read the data at our posts reference
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-//                projectList=new ArrayList<String>();
-                for (DataSnapshot child: dataSnapshot.getChildren()){
-                    project1 = child.getValue(Project.class);
-                    projectList.add(project1.getProjectName());
-                }
-                viewProjects();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
-
-        adapter = new ArrayAdapter<String>(this, R.layout.activity_listview,projectList);
-
-    }
-
-    public void viewProjects(){
-        list.setAdapter(adapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getProjectFromPosition(position);
-
-            }
-        });
-
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //startActivity(position);
-    }
-
-    public void getProjectFromPosition(final int projectPosition){
-
-        //get user id
-        String userId=firebaseAuth.getCurrentUser().getUid();
-        String path = "Projects"+"/"+userId;
-
-        DatabaseReference ref = database.getReference(path);
-        // Attach a listener to read the data at our posts reference
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child: dataSnapshot.getChildren()){
-                    project1 = child.getValue(Project.class);
-                    projectList2.add(project1);
-                }
-                project2 = projectList2.get(projectPosition);
-                viewProject(project2);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
-
-    }
-
-    public void viewProject(Project project2){
-
-        Intent i = (new Intent(this, TaskActivity.class));
-        i.putExtra("projectId",project2.getProjectID());
-        i.putExtra("projectName",project2.getProjectName());
-        i.putExtra("sDate",project2.getProjectStartDate());
-        i.putExtra("eDate",project2.getProjectEndDate());
-        i.putExtra("projectD",project2.getProjectDescription());
-        i.putExtra("totalCost",String.valueOf(project2.getTotalCost()));
-
-        startActivity(i);
-
-    }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 }

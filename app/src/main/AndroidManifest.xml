@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".Model.ProjectItem"></activity>
+        <activity android:name=".ProjectItem"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +26,7 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".TaskActivity" />
-        <activity android:name=".Model.TaskItem" />
+        <activity android:name=".TaskItem" />
     </application>
 
 </manifest>
