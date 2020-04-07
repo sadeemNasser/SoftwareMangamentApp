@@ -70,17 +70,20 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         String userId = firebaseAuth.getCurrentUser().getUid();
         String path = "Projects" + "/" + userId;
-
         DatabaseReference ref = database.getReference(path);
         // Attach a listener to read the data at our posts reference
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                projectList.clear();
+                projectList2.clear();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     project1 = child.getValue(Project.class);
                     projectList.add(project1.getProjectName());
                     projectList2.add(project1);
                 }
+                adapter.updateList(projectList2);
+
             }
 
             @Override
@@ -200,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    public void validInput(){}
 
 
 

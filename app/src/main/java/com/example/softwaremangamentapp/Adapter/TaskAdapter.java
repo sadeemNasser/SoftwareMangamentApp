@@ -85,11 +85,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ItemHolder> {
 
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Project p = snapshot.getValue(Project.class);
-                    if (task.getProjectID() == p.getProjectID()) {
-                        Log.i("REMOVE-one", "project id"+p.getProjectID());
+                    TaskInfo t = snapshot.getValue(TaskInfo.class);
+                    if (task.getTaskName() == t.getTaskName()) {
                         mDatabase.child(snapshot.getKey()).child("statues").setValue("done");
                         notifyDataSetChanged();
+                        updateList(items);
+
 
 
 
@@ -115,12 +116,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ItemHolder> {
 
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Project p = snapshot.getValue(Project.class);
-                    if (task.getProjectID() == p.getProjectID()) {
-                        Log.i("REMOVE-one", "project id"+p.getProjectID());
+                    TaskInfo  t= snapshot.getValue(TaskInfo.class);
+                    if (task.getTaskName() == t.getTaskName()) {
                         mDatabase.child(snapshot.getKey()).setValue(null);
                         notifyDataSetChanged();
-
+                        updateList(items);
 
 
                     }
@@ -191,6 +191,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ItemHolder> {
                 }
             });
         }
+    }
+    public void updateList(ArrayList<TaskInfo> newList) {
+        items = new ArrayList<>();
+        items.addAll(newList);
+        notifyDataSetChanged();
+
+
     }
 }
 

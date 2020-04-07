@@ -90,6 +90,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
                         Log.i("REMOVE-one", "project id"+p.getProjectID());
                         mDatabase.child(snapshot.getKey()).setValue(null);
                         notifyDataSetChanged();
+                        updateList(items);
 
 
 
@@ -193,6 +194,13 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
                 }
             });
         }
+    }
+    public void updateList(ArrayList<Project> newList) {
+        items = new ArrayList<>();
+        items.addAll(newList);
+        notifyDataSetChanged();
+
+
     }
 }
 

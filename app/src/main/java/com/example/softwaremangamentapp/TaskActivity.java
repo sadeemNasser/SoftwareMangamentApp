@@ -92,6 +92,8 @@ public class TaskActivity extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                TaskList.clear();
+                taskInfos.clear();
                 for (DataSnapshot child: dataSnapshot.getChildren()){
                     task = child.getValue(TaskInfo.class);
                     TaskList.add(task.getTaskName());
@@ -100,6 +102,7 @@ public class TaskActivity extends AppCompatActivity {
                     refrence.child("totalCost").setValue(totalCost);
 
                 }
+                adapter.updateList(taskInfos);
             }
 
             @Override
