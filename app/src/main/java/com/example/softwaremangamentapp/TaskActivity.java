@@ -49,20 +49,15 @@ public class TaskActivity extends AppCompatActivity {
     private EditText startDate;
     private EditText endDate;
     private Button createBTN;
-    private Button ProjectInfo;
-    private TextView ProjectCost;
-    Double totalCost=0.0;
-    private RecyclerView list;
-    Bundle extras;
-    TaskInfo task;
+    private Double totalCost=0.0;
+    private Bundle extras;
+    private TaskInfo task;
     private TaskAdapter adapter;
-    String projecId = "";
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private String projecId = "";
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference mDatabase;
-    FloatingActionButton buttonCreate;
-    ArrayList<String> TaskList = new ArrayList<String>();
-    ArrayList<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
+    private ArrayList<String> TaskList = new ArrayList<String>();
+    private ArrayList<TaskInfo> taskInfos = new ArrayList<TaskInfo>();
 
 
     @SuppressLint("WrongViewCast")
@@ -70,17 +65,16 @@ public class TaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
-        buttonCreate = findViewById(R.id.addTask1);
-        ProjectInfo = findViewById(R.id.ProjectInfo);
+        FloatingActionButton buttonCreate = findViewById(R.id.addTask1);
+        Button projectInfo = findViewById(R.id.ProjectInfo);
         extras = getIntent().getExtras();
-        ProjectCost = (TextView) findViewById(R.id.projectC);
+        TextView projectCost = (TextView) findViewById(R.id.projectC);
         if (extras != null)
             projecId = extras.getString("projectId");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         task = new TaskInfo();
         firebaseAuth = FirebaseAuth.getInstance();
-        list = findViewById(R.id.list2);
         final RecyclerView recyclerView = findViewById(R.id.list2);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(new TaskAdapter(this,taskInfos,projecId));
@@ -189,10 +183,9 @@ public class TaskActivity extends AppCompatActivity {
         });
         if (extras != null)
             projecId = extras.getString("projectId");
-        list = findViewById(R.id.list2);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        ProjectInfo.setOnClickListener(new View.OnClickListener() {
+        projectInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewProject();
@@ -215,12 +208,12 @@ public class TaskActivity extends AppCompatActivity {
         i.putExtra("TaskResource",task.getTaskResource());
         i.putExtra("TaskCost",task.getTaskCost());
         i.putExtra("TaskPid",task.getProjectID());
-        i.putExtra("projectId", projecId );;
+        i.putExtra("projectId", projecId );
         startActivity(i);
 
     }
 
-    public void viewProject(){
+    private void viewProject(){
         Intent i = new Intent(this, ProjectItem.class);
         i.putExtra("ProjectName",extras.getString("projectName"));
         i.putExtra("Psdate",extras.getString("sDate"));
@@ -245,7 +238,7 @@ public class TaskActivity extends AppCompatActivity {
 
         String userId=firebaseAuth.getCurrentUser().getUid();
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Projects").child(userId).child(projecId).child("Tasks");
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Projects").child(userId).child(projecId).child("Tasks");
         String key = mDatabase.push().getKey();
         mDatabase.child(key).setValue(task);
         Toast.makeText(TaskActivity.this,"Successfully created",Toast.LENGTH_LONG).show();
@@ -255,10 +248,9 @@ public class TaskActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

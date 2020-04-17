@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".ProjectItem"></activity>
+        <activity android:name=".ProjectItem" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

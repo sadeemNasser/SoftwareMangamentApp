@@ -19,7 +19,8 @@
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="4dp"
-            android:hint="Task Name" />
+            android:hint="Task Name"
+            android:autofillHints="" />
         <EditText
             android:id="@+id/startDate"
             android:layout_width="match_parent"
@@ -30,18 +31,21 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif"
             android:ems="10"
-            android:hint="Enter Start Date" />
+            android:hint="Enter Start Date"
+            android:autofillHints="" />
         <EditText
             android:id="@+id/endDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="4dp"
+            android:inputType="text"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif"
             android:ems="10"
-            android:hint="Enter End Date" />
+            android:hint="Enter End Date"
+            android:autofillHints="" />
         <EditText
             android:id="@+id/taskRes"
             android:inputType="text"
@@ -52,7 +56,8 @@
             android:layout_marginRight="4dp"
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif"
-            android:hint="Resources"/>
+            android:hint="Resources"
+            android:autofillHints="" />
         <EditText
             android:id="@+id/taskCost"
             android:inputType="text"
@@ -63,7 +68,8 @@
             android:layout_marginRight="4dp"
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif"
-            android:hint="Cost"/>
+            android:hint="Cost"
+            android:autofillHints="" />
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/create"
             android:layout_width="match_parent"
@@ -84,6 +90,7 @@
         android:layout_alignRight="@+id/relativeLayout1"
         android:layout_marginTop="1dp"
         android:layout_marginRight="-1dp"
-        android:background="@drawable/close" />
+        android:background="@drawable/close"
+        android:contentDescription="TODO" />
 
 </RelativeLayout>

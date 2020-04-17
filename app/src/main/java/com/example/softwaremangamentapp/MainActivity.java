@@ -2,10 +2,14 @@ package com.example.softwaremangamentapp;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -26,6 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,20 +46,23 @@ public class MainActivity extends AppCompatActivity {
     private PopupWindow pw;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mDatabase;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatePickerDialog picker;
     private EditText projectName;
     private EditText projectDesc;
     private EditText startDate;
     private EditText endDate;
-    private Button createBTN;
-    private ImageButton btncancel;
-    private RecyclerView list;
-    private ProjectAdapter adapter;
+    private static ProjectAdapter adapter;
     private Project project;
-    Project project1;
-    ArrayList<String> projectList = new ArrayList<String>();
-    ArrayList<Project> projectList2 = new ArrayList<Project>();
+    private Project project1;
+    private ArrayList<String> projectList = new ArrayList<String>();
+    private static ArrayList<Project> projectList2 = new ArrayList<Project>();
+
+    public static void updateList(ArrayList<Project> newList) {
+        projectList2 = new ArrayList<>();
+        projectList2.addAll(newList);
+        adapter.notifyDataSetChanged();
+    }
 
 
     @Override
@@ -64,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
         project = new Project();
         firebaseAuth = FirebaseAuth.getInstance();
-        list = findViewById(R.id.list1);
         final RecyclerView recyclerView = findViewById(R.id.list1);
         recyclerView.setAdapter(new ProjectAdapter(this, projectList2));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -82,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                     projectList.add(project1.getProjectName());
                     projectList2.add(project1);
                 }
+                adapter.notifyDataSetChanged();
                 adapter.updateList(projectList2);
 
             }
@@ -117,10 +126,10 @@ public class MainActivity extends AppCompatActivity {
         pw.showAtLocation(layout, Gravity.CENTER_VERTICAL, 0, 0);
 
 
-        btncancel = (ImageButton) layout.findViewById(R.id.button_close);
+        ImageButton btncancel = (ImageButton) layout.findViewById(R.id.button_close);
         btncancel.setOnClickListener(cancel_click);
 
-        createBTN = (Button) layout.findViewById(R.id.create);
+        Button createBTN = (Button) layout.findViewById(R.id.create);
         createBTN.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -183,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public void CreateProject() {
+    private void CreateProject() {
 
         project.setProjectName(projectName.getText().toString().trim());
         project.setProjectDescription(projectDesc.getText().toString().trim());
@@ -203,8 +212,58 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void validInput(){}
+    private void remove(Context context, int position) {
+        String userId=firebaseAuth.getCurrentUser().getUid();
+        Project project=projectList2.get(position);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Projects").child(userId);
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Project p = snapshot.getValue(Project.class);
+                    if (project.getProjectID() == p.getProjectID()) {
+                        Log.i("REMOVE-one", "project id"+p.getProjectID());
+                        mDatabase.child(snapshot.getKey()).setValue(null);
+                        adapter.notifyDataSetChanged();
+                        adapter.updateList(projectList2);
+
+
+
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        Toast.makeText(context, "removed item " + position, Toast.LENGTH_SHORT).show();
+    }
+    void logoutUser(){
+        firebaseAuth= FirebaseAuth.getInstance();
+        firebaseAuth.signOut();
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.action_logout) {
+            logoutUser();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
 }

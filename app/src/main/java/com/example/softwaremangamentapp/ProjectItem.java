@@ -11,12 +11,6 @@ import com.example.softwaremangamentapp.R;
 
 public class ProjectItem extends AppCompatActivity {
 
-    private TextView textViewItemStartDate;
-    private TextView textViewItemEndDate;
-    private TextView textViewProjectName;
-    private TextView textViewtaskDes;
-    private TextView textViewtaskC;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,11 +18,11 @@ public class ProjectItem extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        textViewItemStartDate=findViewById(R.id.textViewItemStartDate);
-        textViewItemEndDate=findViewById(R.id.textViewItemEndDate);
-        textViewProjectName=findViewById(R.id.textViewProjectName);
-        textViewtaskDes = findViewById(R.id.ProjectD);
-        textViewtaskC = findViewById(R.id.projectC);
+        TextView textViewItemStartDate = findViewById(R.id.textViewItemStartDate);
+        TextView textViewItemEndDate = findViewById(R.id.textViewItemEndDate);
+        TextView textViewProjectName = findViewById(R.id.textViewProjectName);
+        TextView textViewtaskDes = findViewById(R.id.ProjectD);
+        TextView textViewtaskC = findViewById(R.id.projectC);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -44,10 +38,9 @@ public class ProjectItem extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

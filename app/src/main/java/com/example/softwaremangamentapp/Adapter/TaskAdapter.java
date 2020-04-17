@@ -3,13 +3,12 @@ package com.example.softwaremangamentapp.Adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.softwaremangamentapp.Model.Project;
+
 import com.example.softwaremangamentapp.Model.TaskInfo;
 import com.example.softwaremangamentapp.R;
 import com.example.softwaremangamentapp.TaskItem;
@@ -26,11 +25,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ItemHolder> {
-    Context context;
+    private Context context;
     private ArrayList<TaskInfo> items;
     private FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
-    String projectID="";
+    private String projectID="";
     private DatabaseReference mDatabase;
+    private DatabaseReference MDatabase;
     private TaskInfo task;
 
     public TaskAdapter(Context context, ArrayList<TaskInfo> items,String id) {
@@ -47,8 +47,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ItemHolder> {
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view =LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_taskitem, viewGroup, false);
-        ItemHolder holder = new ItemHolder(view);
-        return  holder;
+        return new ItemHolder(view);
     }
 
 
@@ -141,7 +140,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ItemHolder> {
         viewTasks(task);
     }
 
-    public void viewTasks(TaskInfo task){
+    private void viewTasks(TaskInfo task){
         Intent i = (new Intent(context, TaskItem.class));
         i.putExtra("TaskName",task.getTaskName());
         i.putExtra("Tsdate",task.getTaskStartDate());

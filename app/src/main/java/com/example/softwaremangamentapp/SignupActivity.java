@@ -1,6 +1,5 @@
 package com.example.softwaremangamentapp;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,7 +56,7 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    public void signup() {
+    private void signup() {
         Log.d(TAG, "Signup");
 
         if (!validate()) {
@@ -67,11 +66,7 @@ public class SignupActivity extends AppCompatActivity {
 
         _signupButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
-        progressDialog.show();
+
 
 
         String email = _emailText.getText().toString();
@@ -93,7 +88,6 @@ public class SignupActivity extends AppCompatActivity {
 
                         }
 
-                        progressDialog.dismiss();
                     }
                 });
 
@@ -101,25 +95,25 @@ public class SignupActivity extends AppCompatActivity {
                 new Runnable() {
                     public void run() {
                         onSignupSuccess();
-                        progressDialog.dismiss();
                     }
                 }, 3000);
     }
 
 
-    public void onSignupSuccess() {
+    private void onSignupSuccess() {
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
+        Toast.makeText(SignupActivity.this, "Account created Successfully", Toast.LENGTH_LONG).show();
         finish();
     }
 
-    public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+    private void onSignupFailed() {
+        Toast.makeText(getBaseContext(), "Sign up failed", Toast.LENGTH_LONG).show();
 
         _signupButton.setEnabled(true);
     }
 
-    public boolean validate() {
+    private boolean validate() {
         boolean valid = true;
 
 
@@ -143,7 +137,7 @@ public class SignupActivity extends AppCompatActivity {
 
         return valid;
     }
-    public void displayErrorMsg(String errorCode){
+    private void displayErrorMsg(String errorCode){
         switch (errorCode) {
 
             case "ERROR_INVALID_CUSTOM_TOKEN":

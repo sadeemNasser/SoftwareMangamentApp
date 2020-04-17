@@ -19,7 +19,8 @@
         android:gravity="center"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
-        android:src="@drawable/open"/>
+        android:src="@drawable/open"
+        android:contentDescription="TODO" />
 
     <ImageView
         android:id="@+id/right_view"
@@ -30,7 +31,8 @@
         android:gravity="center"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
-        android:src="@drawable/trash"/>
+        android:src="@drawable/trash"
+        android:contentDescription="TODO" />
 
     <TextView
         android:id="@+id/drag_item"

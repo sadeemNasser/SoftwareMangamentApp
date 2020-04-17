@@ -19,7 +19,8 @@
             android:layout_height="213dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            app:srcCompat="@drawable/logo" />
+            app:srcCompat="@drawable/logo"
+            android:contentDescription="TODO" />
 
 
 
@@ -34,7 +35,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="Email" />
+                android:hint="Email"
+                android:autofillHints="" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password Label -->
@@ -47,7 +49,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="Password"/>
+                android:hint="Password"
+                android:autofillHints="" />
         </com.google.android.material.textfield.TextInputLayout>
 
 

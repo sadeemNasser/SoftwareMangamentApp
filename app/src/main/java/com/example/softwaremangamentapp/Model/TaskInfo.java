@@ -2,13 +2,13 @@ package com.example.softwaremangamentapp.Model;
 
 public class TaskInfo {
 
-    public String projectID;
-    public String taskName;
-    public String taskStartDate;
-    public String taskEndDate;
-    public String taskResource;
-    public String statues;
-    public double taskCost;
+    private String projectID;
+    private String taskName;
+    private String taskStartDate;
+    private String taskEndDate;
+    private String taskResource;
+    private String statues;
+    private double taskCost;
 
     public TaskInfo() {
     }

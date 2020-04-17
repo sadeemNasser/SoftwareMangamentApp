@@ -18,108 +18,22 @@
         Basic Layouts styles
     -->
 
-    <style name="MatchParent">
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">match_parent</item>
-    </style>
-
-    <style name="WrapContent">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-    </style>
-
-    <style name="MatchWidth">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-    </style>
-
-    <style name="MatchHeight">
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">wrap_content</item>
-    </style>
-
-    <style name="MatchParentVertical" parent="MatchParent">
-        <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="MatchWidthVertical" parent="MatchWidth">
-        <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="MatchHeightVertical" parent="MatchHeight">
-        <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="MatchParentVerticalCenter" parent="MatchParentVertical">
-        <item name="android:gravity">center</item>
-    </style>
-
-    <!-- Text styles -->
-    <style name="LogoTextStyle" parent="MatchWidth">
-        <item name="android:textSize">@dimen/bigTextSize11</item>
-        <item name="android:textColor">@color/primary</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
-    <!-- Button styles -->
-    <style name="PinkButtonStyle" parent="WrapContent">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:background">@drawable/round_border</item>
-    </style>
-
-    <style name="ButtonProjectStyle" parent="PinkButtonStyle">
-        <item name="android:layout_marginStart">@dimen/smallPadding1</item>
-        <item name="android:layout_marginEnd">@dimen/smallPadding1</item>
-        <item name="android:textSize">@dimen/smallTextSize13</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_height">match_parent</item>
-    </style>
-
-    <!-- Edit text styles -->
-    <style name="EditTextAddProject">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">2</item>
-        <item name="android:gravity">left|center_vertical</item>
-    </style>
 
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+
+
+
+
 
         <!-- Base application theme. -->
         <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
             <!-- Customize your theme here. -->
         </style>
 
-        <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
-            <item name="colorPrimary">@color/primary</item>
-            <item name="colorPrimaryDark">@color/primary_dark</item>
-            <item name="colorAccent">@color/accent</item>
-
-            <item name="android:windowBackground">@color/primary</item>
-
-            <item name="colorControlNormal">@color/iron</item>
-            <item name="colorControlActivated">@color/white</item>
-            <item name="colorControlHighlight">@color/white</item>
-            <item name="android:textColorHint">@color/iron</item>
-
-            <item name="colorButtonNormal">@color/primary_darker</item>
-        </style>
-
-        <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
-            <item name="colorAccent">@color/white</item>
-            <item name="android:textColorPrimary">@color/iron</item>
-            <item name="background">@color/primary</item>
-        </style>
 
     </resources>
 

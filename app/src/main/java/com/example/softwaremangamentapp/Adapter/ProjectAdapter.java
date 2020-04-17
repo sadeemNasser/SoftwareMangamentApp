@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.softwaremangamentapp.MainActivity;
 import com.example.softwaremangamentapp.Model.Project;
 import com.example.softwaremangamentapp.R;
 import com.example.softwaremangamentapp.TaskActivity;
@@ -31,16 +32,16 @@ import java.util.ArrayList;
 import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder> {
-    Context context;
+    private Context context;
     private ArrayList<Project> items;
     private FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
 
     private DatabaseReference mDatabase;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    Project project1;
-    Project project2 = new Project();
+    private Project project1;
+    private Project project2 = new Project();
     ArrayList<String> projectList = new ArrayList<String>();
-    ArrayList<Project> projectList2 = new ArrayList<Project>();
+    private ArrayList<Project> projectList2 = new ArrayList<Project>();
 
     public ProjectAdapter(Context context, ArrayList<Project> items) {
 
@@ -90,7 +91,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
                         Log.i("REMOVE-one", "project id"+p.getProjectID());
                         mDatabase.child(snapshot.getKey()).setValue(null);
                         notifyDataSetChanged();
-                        updateList(items);
+                        MainActivity.updateList(items);
 
 
 
@@ -138,7 +139,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
         });
 
     }
-    public void viewProject(Project project2){
+    private void viewProject(Project project2){
 
         Intent i = (new Intent(context, TaskActivity.class));
         i.putExtra("projectId",project2.getProjectID());

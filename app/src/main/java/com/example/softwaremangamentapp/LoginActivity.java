@@ -1,6 +1,5 @@
 package com.example.softwaremangamentapp;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuthException;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -64,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void login() {
+    private void login() {
         Log.d(TAG, "Login");
 
         if (!validate()) {
@@ -74,11 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
         _loginButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.show();
+
 
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
@@ -88,9 +82,9 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
                         //if the task is successful
                         if(task.isSuccessful()){
+                            Toast.makeText(LoginActivity.this, "Successfully Login", Toast.LENGTH_LONG).show();
                             goToMain();
                         }else {
                             String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
@@ -105,7 +99,6 @@ public class LoginActivity extends AppCompatActivity {
                         // On complete call either onLoginSuccess or onLoginFailed
                         onLoginSuccess();
                         // onLoginFailed();
-                        progressDialog.dismiss();
                     }
                 }, 3000);
     }
@@ -130,18 +123,18 @@ public class LoginActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    public void onLoginSuccess() {
+    private void onLoginSuccess() {
         _loginButton.setEnabled(true);
         finish();
     }
 
-    public void onLoginFailed() {
+    private void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
         _loginButton.setEnabled(true);
     }
 
-    public boolean validate() {
+    private boolean validate() {
         boolean valid = true;
 
         String email = _emailText.getText().toString();
@@ -163,10 +156,10 @@ public class LoginActivity extends AppCompatActivity {
 
         return valid;
     }
-    public void goToMain(){
+    private void goToMain(){
         startActivity(new Intent(this, MainActivity.class));
     }
-    public void displayErrorMsg(String errorCode){
+    private void displayErrorMsg(String errorCode){
         switch (errorCode) {
 
             case "ERROR_INVALID_CUSTOM_TOKEN":
