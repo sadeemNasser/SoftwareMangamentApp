@@ -194,24 +194,28 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void CreateProject() {
-
-        project.setProjectName(projectName.getText().toString().trim());
-        project.setProjectDescription(projectDesc.getText().toString().trim());
-        project.setProjectStartDate(startDate.getText().toString().trim());
-        project.setProjectEndDate(endDate.getText().toString().trim());
-
-
-        //get user id
-        String userId = firebaseAuth.getCurrentUser().getUid();
-        String path = "Projects" + "/" + userId;
-        mDatabase = FirebaseDatabase.getInstance().getReference(path);
-        String key = mDatabase.push().getKey();
-        project.setProjectID(key);
-        mDatabase.child(key).setValue(project);
-        Toast.makeText(MainActivity.this, "Successfully created", Toast.LENGTH_LONG).show();
-        pw.dismiss();
+        String name =projectName.getText().toString().trim();
+        String sdate =startDate.getText().toString().trim();
+        String edate =endDate.getText().toString().trim();
+        String desc =projectDesc.getText().toString().trim();
+        if(!name.isEmpty()&&!desc.isEmpty()&&!sdate.isEmpty()&&!edate.isEmpty()) {
+            project.setProjectName(name);
+            project.setProjectDescription(desc);
+            project.setProjectStartDate(sdate);
+            project.setProjectEndDate(edate);
 
 
+            //get user id
+            String userId = firebaseAuth.getCurrentUser().getUid();
+            String path = "Projects" + "/" + userId;
+            mDatabase = FirebaseDatabase.getInstance().getReference(path);
+            String key = mDatabase.push().getKey();
+            project.setProjectID(key);
+            mDatabase.child(key).setValue(project);
+            Toast.makeText(MainActivity.this, "Successfully created", Toast.LENGTH_LONG).show();
+            pw.dismiss();
+
+        }
     }
     private void remove(Context context, int position) {
         String userId=firebaseAuth.getCurrentUser().getUid();

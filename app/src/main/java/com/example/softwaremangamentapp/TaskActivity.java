@@ -228,22 +228,29 @@ public class TaskActivity extends AppCompatActivity {
 
         TaskInfo task =new TaskInfo();
 
-        task.setTaskName(taskName.getText().toString().trim());
-        task.setTaskStartDate(startDate.getText().toString().trim());
-        task.setTaskEndDate(endDate.getText().toString().trim());
-        task.setTaskResource(taskRes.getText().toString().trim());
-        Double cost = Double.parseDouble(taskCost.getText().toString());
-        task.setTaskCost(cost);
-        task.setStatues("NotYet");
+        String Tname =taskName.getText().toString().trim();
+        String sdate =startDate.getText().toString().trim();
+        String edate =endDate.getText().toString().trim();
+        String res =taskRes.getText().toString().trim();
+        String Tcost =taskCost.getText().toString().trim();
 
-        String userId=firebaseAuth.getCurrentUser().getUid();
+        if(!Tname.isEmpty()&&!res.isEmpty()&&!sdate.isEmpty()&&!edate.isEmpty()&&!Tcost.isEmpty()) {
+            task.setTaskName(Tname);
+            task.setTaskStartDate(sdate);
+            task.setTaskEndDate(edate);
+            task.setTaskResource(res);
+            Double cost = Double.parseDouble(Tcost);
+            task.setTaskCost(cost);
+            task.setStatues("NotYet");
 
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Projects").child(userId).child(projecId).child("Tasks");
-        String key = mDatabase.push().getKey();
-        mDatabase.child(key).setValue(task);
-        Toast.makeText(TaskActivity.this,"Successfully created",Toast.LENGTH_LONG).show();
-        pw.dismiss();
+            String userId = firebaseAuth.getCurrentUser().getUid();
 
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("Projects").child(userId).child(projecId).child("Tasks");
+            String key = mDatabase.push().getKey();
+            mDatabase.child(key).setValue(task);
+            Toast.makeText(TaskActivity.this, "Successfully created", Toast.LENGTH_LONG).show();
+            pw.dismiss();
+        }
     }
 
     @Override
