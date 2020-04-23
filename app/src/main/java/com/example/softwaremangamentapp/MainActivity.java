@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -223,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Project p = snapshot.getValue(Project.class);
-                    if (project.getProjectID() == p.getProjectID()) {
+                    if (Objects.equals(project.getProjectID(), p.getProjectID())) {
                         Log.i("REMOVE-one", "project id"+p.getProjectID());
                         mDatabase.child(snapshot.getKey()).setValue(null);
                         adapter.notifyDataSetChanged();
@@ -244,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
         });
         Toast.makeText(context, "removed item " + position, Toast.LENGTH_SHORT).show();
     }
-    void logoutUser(){
+    private void logoutUser(){
         firebaseAuth= FirebaseAuth.getInstance();
         firebaseAuth.signOut();
         startActivity(new Intent(MainActivity.this, LoginActivity.class));

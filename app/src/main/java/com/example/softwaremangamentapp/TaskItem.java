@@ -25,6 +25,7 @@ public class TaskItem extends AppCompatActivity {
         TextView textViewtaskR = findViewById(R.id.taskR);
         TextView textViewtaskC = findViewById(R.id.taskC);
         Bundle extras = getIntent().getExtras();
+
         if (extras != null) {
             textViewItemStartDate.setText(extras.getString("Tsdate"));
             textViewItemEndDate.setText(extras.getString("TeDate"));

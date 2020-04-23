@@ -56,6 +56,7 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+
     private void signup() {
         Log.d(TAG, "Signup");
 
@@ -99,7 +100,6 @@ public class SignupActivity extends AppCompatActivity {
                 }, 3000);
     }
 
-
     private void onSignupSuccess() {
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
@@ -109,7 +109,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private void onSignupFailed() {
         Toast.makeText(getBaseContext(), "Sign up failed", Toast.LENGTH_LONG).show();
-
+        //enable user to re-enter input
         _signupButton.setEnabled(true);
     }
 

@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.zerobranch.layout.SwipeLayout;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
 
@@ -87,7 +88,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Project p = snapshot.getValue(Project.class);
-                    if (project.getProjectID() == p.getProjectID()) {
+                    if (Objects.equals(project.getProjectID(), p.getProjectID())) {
                         Log.i("REMOVE-one", "project id"+p.getProjectID());
                         mDatabase.child(snapshot.getKey()).setValue(null);
                         notifyDataSetChanged();

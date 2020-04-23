@@ -20,6 +20,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.zerobranch.layout.SwipeLayout;
 import java.util.ArrayList;
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
@@ -85,7 +87,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ItemHolder> {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     TaskInfo t = snapshot.getValue(TaskInfo.class);
-                    if (task.getTaskName() == t.getTaskName()) {
+                    if (Objects.equals(task.getTaskName(), t.getTaskName())) {
                         mDatabase.child(snapshot.getKey()).child("statues").setValue("done");
                         notifyDataSetChanged();
                         updateList(items);
@@ -116,7 +118,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ItemHolder> {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     TaskInfo  t= snapshot.getValue(TaskInfo.class);
-                    if (task.getTaskName() == t.getTaskName()) {
+                    if (Objects.equals(task.getTaskName(), t.getTaskName())) {
                         mDatabase.child(snapshot.getKey()).setValue(null);
                         notifyDataSetChanged();
                         updateList(items);

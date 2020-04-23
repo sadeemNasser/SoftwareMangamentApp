@@ -31,6 +31,7 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif"
             android:ems="10"
+            android:inputType="date"
             android:hint="Enter Start Date"
             android:autofillHints="" />
         <EditText
@@ -39,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="4dp"
-            android:inputType="text"
+            android:inputType="date"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif"
@@ -60,7 +61,7 @@
             android:autofillHints="" />
         <EditText
             android:id="@+id/taskCost"
-            android:inputType="text"
+            android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"

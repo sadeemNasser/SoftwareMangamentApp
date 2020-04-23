@@ -77,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        // TODO: Implement your own authentication logic here.
         firebaseAuth.signInWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -104,18 +103,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
-                this.finish();
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == REQUEST_SIGNUP) {
+//            if (resultCode == RESULT_OK) {
+//
+//                // TODO: Implement successful signup logic here
+//                // By default we just finish the Activity and log them in automatically
+//                this.finish();
+//            }
+//        }
+//    }
 
     @Override
     public void onBackPressed() {
@@ -214,15 +213,13 @@ public class LoginActivity extends AppCompatActivity {
                 break;
 
             case "ERROR_USER_TOKEN_EXPIRED":
-                Toast.makeText(LoginActivity.this, "The user\\'s credential is no longer valid. The user must sign in again.", Toast.LENGTH_LONG).show();
+
+            case "ERROR_INVALID_USER_TOKEN":
+                Toast.makeText(LoginActivity.this, "The user's credential is no longer valid. The user must sign in again.", Toast.LENGTH_LONG).show();
                 break;
 
             case "ERROR_USER_NOT_FOUND":
                 Toast.makeText(LoginActivity.this, "There is no user record corresponding to this identifier. The user may have been deleted.", Toast.LENGTH_LONG).show();
-                break;
-
-            case "ERROR_INVALID_USER_TOKEN":
-                Toast.makeText(LoginActivity.this, "The user\\'s credential is no longer valid. The user must sign in again.", Toast.LENGTH_LONG).show();
                 break;
 
             case "ERROR_OPERATION_NOT_ALLOWED":
@@ -234,6 +231,9 @@ public class LoginActivity extends AppCompatActivity {
                 _passwordText.setError("The password is invalid it must 6 characters at least");
                 _passwordText.requestFocus();
                 break;
+
+
+
 
         }
     }
